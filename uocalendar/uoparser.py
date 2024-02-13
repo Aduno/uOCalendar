@@ -38,13 +38,14 @@ class UOParser:
       # If the component cell is empty, it is a continuation of the previous row
       if(cells[2]!=None):
         component = cells[2].text
-
-      # Fill in the component, days & time, location, instructor, start and end date
-      for cell in cells[2:]:
-        print(cell)
+      
+      # Fill in the component, days & time, location, instructor, start and end date      
+      course_data['component'] = component
+      course_data['days'] = cells[3].text.split(' ', 1)[0]
+      course_data['time'] = cells[3].text.split(' ', 1)[1]
+      course_data['location'] = cells[4].text
+      course_data['instructor'] = cells[5].text
+      course_data['start_date'] = cells[6].text.split(' - ')[0]
+      course_data['end_date'] = cells[6].text.split(' - ')[1]
       break
-
-      # if len(cells) > 0:
-      #   class_type = cells[0].text
-      #   time = cells[1].text
     pass
