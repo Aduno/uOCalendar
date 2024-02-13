@@ -1,0 +1,11 @@
+# Ignore __pycache__ folder
+uocalendar/__pycache__/
+
+# Ignore include folder
+uocalendar/include/
+
+# Ignore Lib folder
+uocalendar/Lib/
+
+# Ignore Scripts folder
+uocalendar/Scripts/
