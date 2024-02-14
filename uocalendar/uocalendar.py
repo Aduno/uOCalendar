@@ -1,4 +1,4 @@
-from uoparser import UOParser
+from uoparser import UOParser 
 
 if __name__ == '__main__':
   with open('test\My Class Schedule_files\SA_LEARNER_SERVICES.htm') as file:
@@ -14,4 +14,4 @@ if __name__ == '__main__':
   for table in tables:
     courses.append(parser.parse_table(table))
     
-  # print(courses)
+  print(courses)
