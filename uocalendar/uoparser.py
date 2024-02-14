@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from model.course import Course
-
+from model.course_section import CourseSection
 class UOParser:
   def __init__(self, html):
     self.soup = BeautifulSoup(html, 'html.parser')
@@ -34,35 +34,30 @@ class UOParser:
     component = None
     for row in rows[1:]:
       cells = row.find_all('td')
-      
+      course_section = CourseSection()
       for i, cell in enumerate(cells):
-        course_section = dict()
         item = cell.find('span').text if cell.find('span') else None
-
+        # Skip the first two cells (Class Number and Section code)
+        # Fill in the component, days & time, location, instructor, start and end date      
         match i:
           case 2:
-            if(item != None or item != '\\xa0'):
+            if(item != None and item != '\xa0'):
               component = item
-            course_section['component'] = component
+            course_section.component = component
           case 3:
             try: 
-              course_section['days'] = item.split(' ', 1)[0]
-              course_section['time'] = item.split(' ', 1)[1]
+              course_section.day = item.split(' ', 1)[0]
+              course_section.time = item.split(' ', 1)[1]
             except:
-              course_section['days'] = "N/A"
-              course_section['time'] = "N/A"
+              course_section.day = "N/A"
+              course_section.time = "N/A"
           case 4:
-            course_section['location'] = item
+            course_section.location = item
           case 5:
-            course_section['instructor'] = item
+            course_section.instructor = item
           case 6: 
-            course_section['start_date'] = item.split(' - ')[0]
-            course_section['end_date'] = item.split(' - ')[1]
+            course_section.start_date = item.split(' - ')[0]
+            course_section.end_date = item.split(' - ')[1]
           case _:
             continue
-
-      # Skip the first two cells (Class Number and Section code)
-      # Fill in the component, days & time, location, instructor, start and end date      
-
-
       course.class_data.append(course_section)
