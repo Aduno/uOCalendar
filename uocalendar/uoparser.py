@@ -4,6 +4,8 @@ from model.course_section import CourseSection
 class UOParser:
   def __init__(self, html):
     self.soup = BeautifulSoup(html, 'html.parser')
+    # Selecting only relavent part of the soup to make it easier to work with and to reduce the amount of data to process
+    self.soup = self.soup.select('table[id*="ACE_STDNT_ENRL"]')[0]
 
   def find_by_id(self, id):
     return self.soup.find_all(id=id)
@@ -13,7 +15,7 @@ class UOParser:
 
   def find_table_by_class(self, class_name):
     return self.soup.find_all('table', class_=class_name)
-    
+  
   def parse_table(self, table):
     course = Course()
     course_title = table.find('td', class_='PAGROUPDIVIDER').text
@@ -30,15 +32,13 @@ class UOParser:
   def __parse_class_data(self, course_data, course):
     # Go row by row collecting class type, time, and location and professor
     rows = course_data.find_all('tr')
-
     component = None
     for row in rows[1:]:
       cells = row.find_all('td')
       course_section = CourseSection()
       for i, cell in enumerate(cells):
         item = cell.find('span').text if cell.find('span') else None
-        # Skip the first two cells (Class Number and Section code)
-        # Fill in the component, days & time, location, instructor, start and end date      
+        # Skip the first two cells (Class Number and Section code)  
         match i:
           case 2:
             if(item != None and item != '\xa0'):
@@ -61,3 +61,9 @@ class UOParser:
           case _:
             continue
       course.class_data.append(course_section)
+
+def get_courses_info(self):
+  tables = self.find_table_by_class('PSGROUPBOXWBO')
+  courses = list()
+  for table in tables:
+    courses.append(self.parse_table(table))
