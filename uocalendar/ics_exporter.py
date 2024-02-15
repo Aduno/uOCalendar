@@ -1,6 +1,6 @@
 from ics import Calendar, Event
-from model.course_section import CourseSection
-from model.course import Course
+from uocalendar.model.course_section import CourseSection
+from uocalendar.model.course import Course
 from datetime import datetime
 from dateutil.rrule import rrule, WEEKLY
 import pytz

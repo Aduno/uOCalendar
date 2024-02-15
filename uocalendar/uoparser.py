@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
-from model.course import Course
-from model.course_section import CourseSection
+from uocalendar.model.course import Course
+from uocalendar.model.course_section import CourseSection
 class UOParser:
   def __init__(self, html):
     self.soup = BeautifulSoup(html, 'html.parser')
