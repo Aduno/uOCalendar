@@ -3,15 +3,17 @@ from uocalendar.model.course_section import CourseSection
 from uocalendar.model.course import Course
 from datetime import datetime
 from dateutil.rrule import rrule, WEEKLY
-import pytz
+import pytz, logging
 
 
 # This module will take the parsed information and export it to an .ics file
 class ICSExporter:
+  eastern_tz = pytz.timezone('Canada/Eastern')
+
   def __init__(self):
     self.day_mapping = {"Mo": 0, "Tu": 1, "We": 2, "Th": 3, "Fr": 4, "Sa": 5, "Su": 6}
     self.cal = Calendar()
-    self.eastern_tz = pytz.timezone('Canada/Eastern')
+    logging.info("Initialized ICSExporter")
 
 
   def __get_all_dates(self, start_date, end_date, day):
@@ -48,5 +50,6 @@ class ICSExporter:
           e.begin = self.format_date(date, section.time.split(' - ')[0])
           e.end = self.format_date(date, section.time.split(' - ')[1]) 
           self.cal.events.add(e)
+          logging.debug("Added event to calendar")
     return self.cal
   

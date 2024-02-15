@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import StreamingResponse
 from uocalendar.uocalendar import UOCalendar
+import logging
 app = FastAPI()
 
 # One concern is that since UOCalendar is intiantiated once, it will be shared across all requests.
@@ -14,10 +15,7 @@ def read_root():
 
 @app.post("/uocalendar")
 def generate_ics(file: UploadFile = File(...)):
-    def seralize_ics(ics):
-        with open(ics, 'rb') as my_file:
-            yield from my_file
-    
+    logging.basicConfig(level=logging.DEBUG)
     if not file:
         return {"message": "No upload file sent"}
     # Check if file is an htm file
@@ -25,9 +23,8 @@ def generate_ics(file: UploadFile = File(...)):
         return {"message": "File is not an htm file"}
     try:
         contents = file.file.read()
-        return {"message": "File uploaded successfully"}
-        # ics = uocalendar.run(contents)
-        # return StreamingResponse(seralize_ics(ics), media_type="text/calendar", headers={"Content-Disposition": "attachment; filename=My Schedule.ics"})
+        ics = uocalendar.run(contents.decode('utf-8'))
+        return StreamingResponse(ics, media_type="text/calendar", headers={"Content-Disposition": "attachment; filename=My Schedule.ics"})
     except Exception as e:
         return {"message": f"An error occured: {str(e)}"}
     

@@ -1,11 +1,17 @@
 from bs4 import BeautifulSoup
 from uocalendar.model.course import Course
 from uocalendar.model.course_section import CourseSection
+
+import logging
 class UOParser:
   def __init__(self, html):
     self.soup = BeautifulSoup(html, 'html.parser')
     # Selecting only relavent part of the soup to make it easier to work with and to reduce the amount of data to process
     self.soup = self.soup.select('table[id*="ACE_STDNT_ENRL"]')[0]
+    if(self.soup == None):
+      raise Exception("Invalid html file")
+    else:
+      logging.info("Successfully parsed html file")
 
   def find_by_id(self, id):
     return self.soup.find_all(id=id)
@@ -17,6 +23,7 @@ class UOParser:
     return self.soup.find_all('table', class_=class_name)
   
   def parse_table(self, table):
+    logging.debug("Parsing table")
     course = Course()
     course_title = table.find('td', class_='PAGROUPDIVIDER').text
     course_data = table.find('table', attrs={"class":"PSLEVEL3GRID", "cols": "7"})
@@ -26,14 +33,17 @@ class UOParser:
 
   
   def __parse_class_name(self, course_title, course):
+    logging.debug("Parsing class name")
     course.class_name = course_title.split(' - ')[0]
     course.class_code = course_title.split(' - ')[1]
 
   def __parse_class_data(self, course_data, course):
+    logging.debug("Parsing class data")
     # Go row by row collecting class type, time, and location and professor
     rows = course_data.find_all('tr')
     component = None
     for row in rows[1:]:
+      # logging.debug("Row data:"+ str(row))
       cells = row.find_all('td')
       course_section = CourseSection()
       for i, cell in enumerate(cells):
@@ -62,8 +72,9 @@ class UOParser:
             continue
       course.class_data.append(course_section)
 
-def get_courses_info(self):
-  tables = self.find_table_by_class('PSGROUPBOXWBO')
-  courses = list()
-  for table in tables:
-    courses.append(self.parse_table(table))
+  def get_courses_info(self):
+    tables = self.find_table_by_class('PSGROUPBOXWBO')
+    courses = list()
+    for table in tables:
+      courses.append(self.parse_table(table))
+    return courses
