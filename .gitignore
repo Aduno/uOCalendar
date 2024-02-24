@@ -13,3 +13,4 @@ uocalendar/Lib/
 uocalendar/Scripts/
 
 .venv/
+.env

@@ -2,10 +2,8 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import StreamingResponse
 from uocalendar.uocalendar import UOCalendar
 import logging
-app = FastAPI()
 
-# One concern is that since UOCalendar is intiantiated once, it will be shared across all requests.
-# so there will be bottleneck if there are many requests? Maybe python works a little different than what I'm thinking
+app = FastAPI()
 
 uocalendar = UOCalendar()
 
