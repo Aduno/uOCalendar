@@ -1,5 +1,5 @@
 # uOCalendar
-This script will take in the saved page of the "My Class Schedule" in list view and convert it to a ics file which can be imported to google calendar
+This API will take in the saved page of the "My Class Schedule" in list view and convert it to a ics file which can be imported to google calendar
 
 ## Instructions 
 Go to the "My Class Schedule" through uozone and save the page. This can be done by right clicking on the page then selecting "Save As..." (Chrome) or "Save Page As" (Firefox). Enusre that "Save as type" is set as "Web Page, complete".
