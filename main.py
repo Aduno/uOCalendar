@@ -2,8 +2,17 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import StreamingResponse
 from uocalendar.uocalendar import UOCalendar
 import logging
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins
+    allow_credentials=True,
+    allow_methods=["POST"],
+    allow_headers=["Content-Type"],
+)
 
 uocalendar = UOCalendar()
 
