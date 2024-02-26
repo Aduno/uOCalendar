@@ -12,7 +12,6 @@ class ICSExporter:
 
   def __init__(self):
     self.day_mapping = {"Mo": 0, "Tu": 1, "We": 2, "Th": 3, "Fr": 4, "Sa": 5, "Su": 6}
-    self.cal = Calendar()
     logging.info("Initialized ICSExporter")
 
 
@@ -35,6 +34,7 @@ class ICSExporter:
     return date_time
   
   def generate_ics(self, courses):
+    cal = Calendar()
     course: Course
     for course in courses:
       section : CourseSection
@@ -49,7 +49,7 @@ class ICSExporter:
           e.location = section.location
           e.begin = self.format_date(date, section.time.split(' - ')[0])
           e.end = self.format_date(date, section.time.split(' - ')[1]) 
-          self.cal.events.add(e)
+          cal.events.add(e)
           logging.debug("Added event to calendar")
-    return self.cal
+    return cal
   

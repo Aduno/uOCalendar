@@ -14,10 +14,11 @@ app.add_middleware(
     allow_headers=["Content-Type"],
 )
 
-uocalendar = UOCalendar()
 
 @app.post("/uocalendar")
 def generate_ics(file: UploadFile = File(...)):
+    uocalendar = UOCalendar()
+
     logging.basicConfig(level=logging.INFO)
     if not file:
         return {"message": "No upload file sent"}
