@@ -1,7 +1,7 @@
 from ics import Calendar, Event
 from uocalendar.model.course_section import CourseSection
 from uocalendar.model.course import Course
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.rrule import rrule, WEEKLY
 import pytz, logging
 
@@ -29,6 +29,7 @@ class ICSExporter:
   def format_date(self, date: datetime, time):
     # Take the date directly and convert it to the correct timezone then assign the time to it
     date = date.astimezone(self.eastern_tz)
+    date += datetime.timedelta(days=1)
     time = datetime.strptime(time, "%I:%M%p")
     date_time = date.replace(month=date.month, day=date.day, hour=time.hour, minute=time.minute)
     return date_time
