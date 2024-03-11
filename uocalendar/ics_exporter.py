@@ -31,9 +31,6 @@ class ICSExporter:
     date = date.astimezone(self.eastern_tz)
     time = datetime.strptime(time, "%I:%M%p")
     date_time = date.replace(month=date.month, day=date.day, hour=time.hour, minute=time.minute)
-
-    # Manually shifting the date by one day to work around the server time issue on heroku
-    date += timedelta(days=1)
     return date_time
   
   def generate_ics(self, courses):
@@ -46,6 +43,8 @@ class ICSExporter:
           continue
         section_dates = self.__get_all_dates(section.start_date, section.end_date, section.day)
         for date in section_dates:
+          # Offset shifted days observed in heroku
+          date += timedelta(days=1)
           e = Event()
           e.name = course.class_name + " " + section.component
           e.description = "Instructor: " + section.instructor
