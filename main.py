@@ -1,8 +1,9 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import StreamingResponse
-from uocalendar.uocalendar import UOCalendar
+from uocalendar import UOCalendar
 import logging
 from fastapi.middleware.cors import CORSMiddleware
+import uuid;
 
 app = FastAPI()
 
@@ -31,4 +32,15 @@ def generate_ics(file: UploadFile = File(...)):
         return StreamingResponse(ics, media_type="text/calendar", headers={"Content-Disposition": "attachment; filename=My Schedule.ics"})
     except Exception as e:
         return {"message": f"An error occured: {str(e)}"}
-    
+
+@app.post("/errors")
+def log_error(file: UploadFile = File(...)):
+    contents = file.file.read()
+    # Check if file is smaller than 1mb
+    if len(contents) > 1000000:
+        return {"message": "File is too large"}
+    else:
+        # Write the file to the logs folder. File name will be the current time
+        with open(f'logs/'+uuid.uuid4(), 'wb') as f:
+            f.write(contents)
+        return {"message": "File written to logs folder"}
