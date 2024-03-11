@@ -43,8 +43,7 @@ class ICSExporter:
           continue
         section_dates = self.__get_all_dates(section.start_date, section.end_date, section.day)
         for date in section_dates:
-          # Offset shifted days observed in heroku
-          date += timedelta(days=1)
+          # Manually shifting the date by one day to work around the server time issue on heroku          date += timedelta(days=1)
           e = Event()
           e.name = course.class_name + " " + section.component
           e.description = "Instructor: " + section.instructor
