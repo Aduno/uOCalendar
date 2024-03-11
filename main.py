@@ -36,11 +36,9 @@ def generate_ics(file: UploadFile = File(...)):
 @app.post("/errors")
 def log_error(file: UploadFile = File(...)):
     contents = file.file.read()
-    # Check if file is smaller than 1mb
     if len(contents) > 1000000:
         return {"message": "File is too large"}
     else:
-        # Write the file to the logs folder. File name will be the current time
         with open(f'logs/'+uuid.uuid4(), 'wb') as f:
             f.write(contents)
         return {"message": "File written to logs folder"}
