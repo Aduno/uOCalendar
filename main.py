@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import StreamingResponse
-from uocalendar import UOCalendar
+from uocalendar.uocalendar import UOCalendar
 import logging
 from fastapi.middleware.cors import CORSMiddleware
 import uuid;
