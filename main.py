@@ -41,4 +41,4 @@ def log_error(file: UploadFile = File(...)):
     else:
         with open(f'logs/'+uuid.uuid4(), 'wb') as f:
             f.write(contents)
-        return {"message": "File written to logs folder"}
+        return {"message": "File sucessfully received for investigation"}
