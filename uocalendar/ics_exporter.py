@@ -27,7 +27,7 @@ class ICSExporter:
     return dates
 
   def format_date(self, date: datetime, time):
-    # Take the date directly and converting it to the correct timezone then assign the time to it
+    # Take the date directly and convert it to the correct timezone then assign the time to it
     date = date.astimezone(self.eastern_tz)
     time = datetime.strptime(time, "%I:%M%p")
     date_time = date.replace(month=date.month, day=date.day, hour=time.hour, minute=time.minute)
