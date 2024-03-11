@@ -4,6 +4,7 @@ from uocalendar.uocalendar import UOCalendar
 import logging
 from fastapi.middleware.cors import CORSMiddleware
 import uuid;
+from pathlib import Path 
 
 app = FastAPI()
 
@@ -39,6 +40,7 @@ def log_error(file: UploadFile = File(...)):
     if len(contents) > 1000000:
         return {"message": "File is too large"}
     else:
-        with open(f'logs/'+uuid.uuid4(), 'wb') as f:
-            f.write(contents)
+        file = Path("logs/"+str(uuid.uuid4()))
+        file.parent.mkdir(parents=True, exist_ok=True)
+        file.write_bytes(contents)
         return {"message": "File sucessfully received for investigation"}
